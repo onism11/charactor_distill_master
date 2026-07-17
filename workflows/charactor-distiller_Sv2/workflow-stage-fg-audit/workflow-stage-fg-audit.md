@@ -1,9 +1,4 @@
----
-name: character-audit-test
-description: Draft plan for auditing and smoke-testing a generated virtual character card. Use after material trace, distillation, theme research, and routing are available. This initial version defines the audit workflow, test categories, scoring, and report shape; it does not require automation scripts yet.
----
-
-# Character Audit Test Skill Plan
+# Character Audit Test Stage Prompt
 
 ## Purpose
 
@@ -31,7 +26,7 @@ Optional:
 - prior bad outputs from user
 - user-provided OOC examples
 
-If routing skill is not ready, audit only the content files and mark routing checks as skipped.
+If the route stage is not ready, audit only the content files and mark routing checks as skipped.
 
 ---
 
@@ -83,7 +78,7 @@ Failure examples:
 - every reply style becomes one mode: always poetic, always high-pressure, always soft.
 - no rule for low-pressure ordinary chat.
 
-### 4. Action Skill Usefulness
+### 4. Action Layer Usefulness
 
 Check whether `action.md` tells the model how to handle actual tasks:
 
@@ -111,7 +106,7 @@ Failure example: character becomes a generic philosopher rather than themselves.
 
 ### 6. Routing And Memory
 
-Only run after skill4 exists.
+Only run after the route stage has produced the runtime package.
 
 Check:
 
@@ -121,7 +116,7 @@ Check:
 - memory rules do not overwrite hard canon
 - control commands are unambiguous
 
-For now, mark as `未测试：等待 skill4`.
+For now, mark as `未测试：等待 route stage`.
 
 ---
 
@@ -449,7 +444,7 @@ This draft does not yet implement:
 - model-vs-model judging
 - routing command tests
 
-Those can be added after skill4 exists, because routing and memory behavior will define the real runtime surface.
+Those can be added after the route stage exists, because routing and memory behavior will define the real runtime surface.
 
 ---
 
@@ -462,4 +457,4 @@ Those can be added after skill4 exists, because routing and memory behavior will
 - [ ] Did every failed or partial test get P0/P1/P2 severity?
 - [ ] Did it distinguish persona flaws from action/theme/routing flaws?
 - [ ] Did it produce a short fix list rather than rewriting everything?
-- [ ] Did it mark routing checks skipped if skill4 is not ready?
+- [ ] Did it mark routing checks skipped if the route stage is not ready?

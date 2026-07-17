@@ -1,9 +1,4 @@
----
-name: material-trace
-description: Process raw character materials before distillation. Use as the router for material trace workflow sessions: Step 1 Source Crawl, Step 2 Rawcut, and Step 3 Canon. Each session must read only its matching step file.
----
-
-# Material Trace Skill
+# Material Trace Stage Router
 
 This is the lightweight router for the material trace phase. Do not use this file as the execution prompt for every stage.
 
@@ -25,6 +20,6 @@ In a workflow session, load only the matching step file plus the artifacts named
 
 ## Scope
 
-- Do not write `persona.md`, `analysis.md`, `action.md`, `theme.md`, or routed `SKILL.md` in this skill.
+- Do not write `persona.md`, `analysis.md`, `action.md`, `theme.md`, or routed `SKILL.md` in this stage.
 - Do not create source maps, audit files, examples, or extra docs unless the user explicitly asks.
 - Do not generate an independent `world.md`; world/setting material is internalized into `canon.md`.

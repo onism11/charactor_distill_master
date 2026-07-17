@@ -1,15 +1,10 @@
----
-name: auto-route
-description: Generate a routed runtime SKILL.md for a distilled virtual character package. Use after material trace, persona/action/analysis distillation, and optional theme research are ready. This skill wires persona, action, analysis, theme, canon, world, character_rawcut, memory.md, long_memory.md, and thread commands into a controlled character runtime without rewriting the source layers.
----
-
-# Auto Route Skill
+# Auto Route Stage Prompt
 
 ## Purpose
 
 Create the final routed character skill file for a virtual character package.
 
-This skill does **not** redistill the character. It only decides:
+This stage does **not** redistill the character. It only decides:
 
 - which layer loads by default
 - which layer loads conditionally

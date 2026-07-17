@@ -1,13 +1,22 @@
 ---
-name: charactor-distiller-sv2
-description: 将角色剧情、台词、人物故事与设定蒸馏为可运行角色 Skill 的多阶段工作流，覆盖材料追踪、人格蒸馏、主题研究、路由与审计。
+name: persona-skill-distiller
+description: Distill character source material into an auditable routed persona package through isolated source crawl, rawcut, canon, distill, route, optional post-route theme, and checker stages. Use when building, rerunning, auditing, or publishing a virtual-character skill package from source files.
 ---
 
-# Character Distiller S-v2
+# 角色蒸馏多 session 工作流规范
 
-本文件是 Persona Skill Distiller 的 Skill 入口。它只规定阶段、输入、输出、验收与返修；具体生成模板仍到对应阶段文件读取。
+本文件是 Persona Skill Distiller 的唯一公开 skill 入口。它只规定阶段、输入、输出、验收与返修；具体生成模板按当前阶段到对应 `workflow-stage-*` 文件读取。阶段目录是内部提示资源，不是可单独调用的 skill。
 
-Material Trace 已拆成三份 step 文件；原材料阶段以当前 `1material-trace-skill/step1-source-crawl.md`、`step2-rawcut.md`、`step3-canon.md` 为准。
+Material Trace 已拆成三份 step 文件；原材料阶段以当前 `workflow-stage-a-source-canon/step1-source-crawl.md`、`step2-rawcut.md`、`step3-canon.md` 为准。
+
+## 启动与收尾
+
+启动时至少需要两项：**目标人物**与**原材料路径 / URL / 粘贴文本**。目标时期、确认别名和排除对象可选；材料扫描后若这些边界会影响结果，再在 S1 检查点集中确认。不要在开场询问 Theme 或答题测试。
+
+当前模式规定的基础链完成并由 S9 生成角色包后，再提供可单选、全选或跳过的后置选项：
+
+1. 追加 S8 Theme Research；若追加，完成后只刷新 S9 的 theme 路由。
+2. 运行隔离答题 Audit；若运行，由 F 独立答题、G 独立评审。S10 仅在用户另行要求路由检查或发布验收时执行。
 
 ---
 
@@ -28,9 +37,11 @@ Session 1: Source Crawl
   -> Session 5: Canon Checker
   -> Session 6: Distill
   -> Session 7: Distill Checker
-  -> Session 8: Theme Research
-  -> Session 9: Route
-  -> Session 10: Skill Checker
+  -> Session 9: Route（基础角色包）
+  -> 用户授权后可选：
+       Session 8: Theme Research -> 刷新 Session 9
+       Answer Test F -> Answer Review G
+       Session 10: Skill Checker
 ```
 
 核心边界：
@@ -39,19 +50,25 @@ Session 1: Source Crawl
 - 阶段之间通过文件交接，不继承上一阶段聊天上下文。
 - Create 只生成；Checker 只验收；用户裁决是否返修或进入下一阶段。
 
-默认执行分组（每个 agent 一个 fresh 上下文，只读对应 session 的"读"清单；文件是唯一接口）：
+### 唯一入口与按需加载
 
-| Agent | 负责 | 隔离要点 |
+- 只通过本 `SKILL.md` 启动蒸馏。
+- 启动一个执行角色时，只读 `workflow-prompts/` 中与该角色对应的一份启动提示，再读当前 session 的一份阶段文件与本 session 明列的产物；不得预载其他阶段或全部提示。
+- `workflow-prompts/` 只属于生产控制面，不复制进最终角色包，也不属于角色运行时上下文。
+- F/G 只在用户明确要求答题测试或横评时启动；S1-S10 生产链不读 F/G prompt。
+- active 中不得新增 `answer-agent-prompt.md`。答题隔离边界以按需传入的 `workflow-prompts/Agent-F-answer-test.md` 为准。
+
+控制器提示映射：
+
+| 执行角色 | 对应阶段 | 按需启动提示 |
 |---|---|---|
-| A | S1-S5（trace 全链） | 内含 S3/S5 结构性检查可同上下文自检；严格模式才拆分独立 checker |
-| B | S6 Distill | 不携带 A 的中间推理，只读定稿 canon + rawcut |
-| C | S7 Distill Check | 与 B 必须不同上下文 |
-| D | S8 Theme Research | — |
-| E | S9 Route（S10 可并入） | — |
-| F | 测评答题（运行包测试时） | 上下文不得含评分标准、理想答案或其他变体的答案 |
-| G | 测评评分 | 只评分不答题；与 F 必须不同上下文 |
-
-关键隔离边界是三条：A|B（trace 不污染 distill）、B|C（创作者不自检）、F|G（答题者不见标准答案）。其余分组可按实际情况合并。
+| A | S1-S5 中 controller 指定的当前单一 session | `workflow-prompts/Agent-A-prep-canon.md` |
+| B | S6 Distill | `workflow-prompts/Agent-B-distill.md` |
+| C | S7 Distill Checker | `workflow-prompts/Agent-C-distill-checker.md` |
+| D | 后置可选 S8 Theme Research | `workflow-prompts/Agent-D-theme.md` |
+| E | S9 Route 或可选 S10 Skill Checker；两者保持文件交接隔离 | `workflow-prompts/Agent-E-route-checker.md` |
+| F | 可选 Answer Test | `workflow-prompts/Agent-F-answer-test.md` |
+| G | 可选 Answer Review / Benchmark Comparison | `workflow-prompts/Agent-G-answer-review.md` |
 
 ---
 
@@ -59,25 +76,25 @@ Session 1: Source Crawl
 
 | 产物 | 来源 session | 必须包含 | 格式参考 |
 |---|---|---|---|
-| `source_archive/` | S1 | 全量来源、source units、编码/章节策略、体量/覆盖索引；含 `source_index.md`、`source_manifest.json`、`run_manifest.json` | `1material-trace-skill/step1-source-crawl.md`；旧版等价产物为 `reference/source_crawl.md` |
-| `source_archive/character_rawcut.md` + 大 rawcut sidecar | S2 | `## 0` 头部；`## 1 Scene Slices` 的 8 字段 metadata（含剧情梗概；出现设定可选）；`## 2 可疑/辅助区` 的 3 字段卡；结构化来源时附 `## 3 未命中单元梗概索引`；必要时附索引/摘要 | `1material-trace-skill/step2-rawcut.md` |
-| `canon.md` | S4 | 顶部 `## 资料边界` 段 + `## 0`-`## 10` 全结构；内化世界设定；不生成独立 `world.md` | `1material-trace-skill/step3-canon.md` |
-| `analysis.md` / `persona.md` / `action.md` | S6 | 各自必填子结构；时期声明；可运行人格；行动边界 | `2distill-skill-before.md`；hard/soft 仅作 reference donor |
-| `theme.md` | S8 | 主题研究产物；区分角色证据与外部概念；不得覆盖 persona/canon | `3theme-research-skill.md`, `Theme Research Skill` |
-| `SKILL.md` | S9 | 路由规则、调用建议、memory/command 策略；persona always-on, action/theme/canon conditional | `4auto-route-skill.md`, `Routed SKILL.md Template` |
-| `check/{Stage} Check.md` | S3/S5/S7/S10 | 通过/不通过、薄弱点、最小修改建议；不改写正文 | `5audit-test-skill.md`, `Report Shape` |
+| `source_archive/` | S1 | 全量来源、source units、编码/章节策略、体量/覆盖索引；含 `source_index.md`、`source_manifest.json`、`run_manifest.json` | `workflow-stage-a-source-canon/step1-source-crawl.md`；旧版等价产物为 `reference/source_crawl.md` |
+| `source_archive/character_rawcut.md` + 大 rawcut sidecar | S2 | `## 0` 头部；`## 1 Scene Slices` 的 7 字段 metadata；`## 2 可疑/辅助区` 的 3 字段卡；必要时附索引/摘要 | `workflow-stage-a-source-canon/step2-rawcut.md` |
+| `canon.md` | S4 | `## 0`-`## 10` 全结构；内化世界设定；不生成独立 `world.md` | `workflow-stage-a-source-canon/step3-canon.md` |
+| `analysis.md` / `persona.md` / `action.md` | S6 | 各自必填子结构；时期声明；可运行人格；行动边界 | `workflow-stage-b-distill/workflow-stage-b-distill.md` |
+| `theme.md` | 后置可选 S8 | 主题研究产物；区分角色证据与外部概念；不得覆盖 persona/canon | `workflow-stage-d-theme/workflow-stage-d-theme.md` |
+| `SKILL.md` | S9 | 路由规则、调用建议、memory/command 策略；persona always-on, action/theme/canon conditional | `workflow-stage-e-route/workflow-stage-e-route.md` |
+| `check/{Stage} Check.md` | S3/S5/S7/S10 | 通过/不通过、薄弱点、最小修改建议；不改写正文 | `workflow-stage-fg-audit/workflow-stage-fg-audit.md` |
 
-最终角色包主目录默认只保留 8 个运行主文件：
+最终角色包主目录保留 7 个基础运行文件；授权追加 Theme 后增加第 8 个：
 
 ```text
 canon.md
 analysis.md
 persona.md
 action.md
-theme.md
 SKILL.md
 memory.md
 long_memory.md
+theme.md（可选）
 ```
 
 证据仓与机器索引放入 `source_archive/`；所有 checker、brief、digest、smoke 或人工验收报告放入 `check/`。
@@ -89,7 +106,7 @@ long_memory.md
 ### Session 1: Source Crawl
 
 - 读：用户提供的原材料文件（本地 `.md` / `.txt` / URL / 粘贴材料等）。
-- 指令来源：`1material-trace-skill/step1-source-crawl.md`。
+- 指令来源：`workflow-stage-a-source-canon/step1-source-crawl.md`。
 - 输出：`source_archive/` 全量存档 + `source_archive/source_manifest.json` + `source_archive/source_index.md` + `source_archive/run_manifest.json`；旧版运行可输出 `reference/source_crawl.md`，但必须能映射为 archive + index。
 - 通过标准：原文完整保存、来源可回查、来源顺序保留、不按目标角色预筛、不把长段改写成摘要。
 - 分批规则：大文件按文件或章节分批归档，最终合并为完整 archive；禁止用上下文放不下作为截断或摘录理由。
@@ -98,13 +115,14 @@ long_memory.md
 
 - 检查：`source_archive/source_index.md` 是否覆盖全部材料，来源列表是否完整，体量是否与输入同量级，关键来源是否能回查到原文。
 - 同时裁决三件事：编码是否可信；章节 / source unit 是否可信；alias gate 是否明确为 `confirmed / suspicious / excluded`，并记录 `scope / anchor / collision_risk`。
+- 读取 `source_index.md` 的“大源”标记；只有“大源：是”才允许 Session 2 启用 Large Rawcut Handoff。
 - 通过：进入 Session 2。
 - 不通过：补材料或修正来源后重跑 Session 1。
 
 ### Session 2: Rawcut
 
 - 读：`source_archive/` + `source_archive/source_index.md` + 目标角色名 / 别名 / 排除对象 / 目标时期。旧版运行可读 `reference/source_crawl.md`。
-- 指令来源：`1material-trace-skill/step2-rawcut.md`。
+- 指令来源：`workflow-stage-a-source-canon/step2-rawcut.md`。
 - 输出：`source_archive/character_rawcut.md`。
 - 通过标准：严格按确认名切；主 cut 不并入未确认指代或无名辅助材料；scene slice 不按单句拆；原文裁剪为主体，备注只处理硬信息缺口。
 - 分批规则：按来源文件或章节分批扫切，完成后合并为统一编号、原文顺序一致的 `source_archive/character_rawcut.md`。
@@ -117,8 +135,7 @@ long_memory.md
   - 目标角色名、确认别名、排除对象、目标时期是否已记录或可从用户输入明确推出。
   - Source Crawl 是否产出全量 raw evidence，而不是重写摘要；本地文本输入是否完整照录、未按目标角色预筛、未摘要。
   - `source_archive/character_rawcut.md` 是否按 scene slice 输出，而不是单句切分。
-  - 每个 slice 是否包含 8 个 metadata 字段：来源、命中词、参与者、时期/状态、是否疑似、场景类型、裁剪原因、剧情梗概（只写事件不写判断；出现设定为可选第 9 项）。
-  - 结构化来源时：模板注释的字面命中是否被排除；是否未整 unit 复制；无目标内容单元是否只入 `## 3 未命中单元梗概索引`。
+  - 每个 slice 是否包含 7 个 metadata 字段：来源、命中词、参与者、时期/状态、是否疑似、场景类型、裁剪原因。
   - 原文裁剪是否为主体，备注是否不超过 1 句。
   - 同一连续场景是否未拆成多条重复条目。
   - 是否避免在 trace 阶段做人格判断、二次叙述，或强行分类到“直接台词 / 关键行动 / 重大选择”等栏目。
@@ -129,11 +146,10 @@ long_memory.md
 ### Session 4: Canon
 
 - 读：`source_archive/character_rawcut.md` 或大 rawcut sidecar + 用户指定的目标时期；必要时用 `source_archive/source_index.md` / `source_archive/source_manifest.json` 定位回查原文。
-- 指令来源：`1material-trace-skill/step3-canon.md`。
+- 指令来源：`workflow-stage-a-source-canon/step3-canon.md`。
 - 不读：Step 1/Step 2 的执行指令；Self-Check；后续 distill/route/checker 规则。
 - 输出：`canon.md`。
 - 通过标准：生成中层事实资产，而不是剧情概述、人格分析或工程合规报告。
-- 资料边界：`canon.md` 顶部声明资料覆盖范围（截至版本/日期、依据来源、已知未覆盖）；新主线材料默认只更新 canon，不重跑 S6 个性层，除非新 canon 推翻默认时期、核心关系、价值排序或声线依据。
 
 ### Session 5: Canon Checker
 
@@ -162,42 +178,42 @@ long_memory.md
 ### Session 6: Distill
 
 - 读：定稿 `canon.md` + `source_archive/character_rawcut.md` 或大 rawcut sidecar + 用户目标用途 / 默认时期。
-- 指令来源：`2distill-skill/2distill-skill-before.md` 全文。
+- 指令来源：`workflow-stage-b-distill/workflow-stage-b-distill.md` 全文。
 - 输出：`analysis.md` / `persona.md` / `action.md`。
-- 不在本 session 生成 theme；Theme Research 进入 Session 8。
+- S6 不生成 theme；基础角色包完成后再由用户决定是否追加 Session 8。
 - 通过标准：产物可运行、可审计，但不把 persona/action 写成证据报告。
 - 默认时期：跨时期差异明显时先裁决；用户授权自主执行时由主 agent 写明选择、依据和风险，未授权时暂停。
 
 ### Session 7: Distill Checker + Smoke Test
 
-- 读：`analysis.md` / `persona.md` / `action.md` + `canon.md` + 固定 smoke questions；有 `theme.md` 时同时检查。
+- 读：`analysis.md` / `persona.md` / `action.md` + `canon.md` + Audit 阶段文件内置的 smoke questions。
 - 判据：
   - persona 是否可运行，而不是证据报告或形容词人格。
   - 是否出现审计腔，例如“现有材料能支持的是...”作为运行态默认口吻。
   - 声线是否与 canon 的口吻依据一致，低压/高压/亲密/拒绝场景是否能区分。
   - 阶段是否未混淆，后期或 AU 未反向覆盖默认时期。
   - action 是否只规定任务条件和职责边界，不覆盖 persona Layer 0。
-  - theme 是否只加深讨论，不覆盖 persona/canon。
 - 输出：`check/Distill Check.md`，含通过/不通过 + smoke test 结果 + 最小修改建议。
 
-### Session 8: Theme Research
+### Session 8（可选）: Theme Research
 
-- 读：`canon.md` + `analysis.md` + `persona.md` + `action.md`；必要时按 canon 指针下钻 `source_archive/character_rawcut.md` / `source_archive/source_index.md`。
-- 指令来源：`3theme-research-skill/3theme-research-skill.md`。
+- 触发：S9 基础角色包完成后，用户明确授权追加主题层。
+- 读：定稿 `canon.md` + `analysis.md` + `persona.md`；必要时按 canon 指针回查 rawcut / source。
+- 指令来源：`workflow-stage-d-theme/workflow-stage-d-theme.md`。
 - 输出：`theme.md`。
-- 默认模式：使用联网 `web-verified`；只有用户禁网、运行环境不可联网，或本轮明确要求 local-only 时才输出 local-only 并在文件头标记。
-- 联网预算：fetch（读页）上限 8 次 / 轮，搜索查询不计入。每框架至多 1-2 次 fetch，正式框架优先；预算不够时收窄框架数量，不降低单源阅读深度。
-- 通过标准：主题层只加深哲学、政治、宗教、文学、伦理、心理或审美坐标，不覆盖 `persona.md`、`analysis.md` 或 `canon.md`；外部概念必须回扣角色证据。
+- 通过标准：只增加概念坐标，不反向改写 persona / analysis / action / canon；默认使用联网 `web-verified` 模式，除非用户禁网、环境不可联网或本轮明确要求 local-only。
+- 交接：完成后重跑 S9，但只把 `theme.md` 接入 conditional route，不重写其他角色文件。
 
 ### Session 9: Route
 
-- 读：所有定稿产物：`canon.md` / `persona.md` / `analysis.md` / `action.md` / `relationship.md` / `theme.md` / memory templates 等。
-- 指令来源：`4auto-route-skill/4auto-route-skill.md` 全文。
+- 读：当前存在的定稿产物：`canon.md` / `persona.md` / `analysis.md` / `action.md` / `relationship.md` / memory templates 等；仅在 `theme.md` 已存在时读取它。
+- 指令来源：`workflow-stage-e-route/workflow-stage-e-route.md` 全文。
 - 输出：最终角色包的 `SKILL.md`；必要时按模板放置 `memory.md` / `long_memory.md`。
 - 通过标准：只布线，不重写人格；persona always-on；每个新问题先独立判断路由；analysis 可静默处理动机、因果、关系逻辑、价值冲突、反事实判断与深层人物理解，但不把普通对话自动改写成分析稿；action 仅处理拒绝、任务行为、决策、边界、场景与对象距离变化；canon/source_archive 处理事实、时间线、制度、历史与反事实因果。
 
-### Session 10: Skill Checker
+### Session 10（后置可选）: Skill Checker
 
+- 触发：基础角色包完成后，用户明确要求路由检查或发布验收。
 - 读：`SKILL.md` + 所有上游产物 + smoke questions。
 - 判据：
   - `SKILL.md` 是否正确路由到各层。
@@ -237,16 +253,16 @@ long_memory.md
 
 - `agent`：工人，固定职责的执行者。
 - `session`：房间，一个会积累上下文、也会被旧上下文污染的窗口。
-- `skill`：操作手册，告诉 agent 某类任务怎么做。
+- `skill`：公开操作入口；本项目只指本文件，以及流水线最终产出的角色 `SKILL.md`。
 - `workflow`：工序安排，规定哪个阶段读取哪些文件、输出哪些文件、由哪个 checker 验收。
 - `artifact`：交接文件，阶段之间继承文件而不是继承聊天记忆。
 - `checker`：质检员，只验收和指出最小修改建议，不重写正文。
 
 ---
 
-## 6. 轻量版本（基于 10-session 基线）
+## 6. 轻量版本（基于 S1-S10 阶段编号）
 
-本节是日常运行版。上文 `## 0`-`## 5` 保留为重度 / 发布前验收版，包含完整 10 个 session；轻量版只收窄默认执行链路，不改变各 session 的产物格式和质量边界。
+本节是日常运行版。上文 `## 0`-`## 5` 保留完整 session spec，其中 S8 Theme Research 与 S10 Skill Checker 均为可选；轻量版只收窄默认执行链路，不改变各 session 的产物格式和质量边界。
 
 ### 6.1 轻量版流程
 
@@ -258,18 +274,22 @@ Session 1: Source Crawl
   -> Session 5: Canon Checker
   -> 用户 / 主 agent 裁决
   -> Session 6: Distill
-  -> Session 8: Theme Research
-  -> Session 9: Route
-  -> 人工快速试聊 / 结束
+  -> Session 9: Route（基础角色包）
+  -> 询问是否追加 Theme / 运行 Audit
+       Theme: Session 8 -> 刷新 Session 9
+       Audit: Answer Test F -> Answer Review G
+  -> 结束
 ```
 
 默认跳过：
 
 - Session 3: Rawcut Checker
 - Session 7: Distill Checker + Smoke Test
+- Session 8: Theme Research
 - Session 10: Skill Checker
+- Answer Test F / Answer Review G
 
-跳过不是删除。它们仍然以上文 10-session spec 为准，只在严格模式升级时插回。
+跳过不是删除。它们仍然以上文 session spec 为准，只在严格模式升级时插回。
 
 ### 6.2 轻量版默认产物
 
@@ -280,7 +300,7 @@ Session 1: Source Crawl
 | `canon.md` | Session 4 | 中层事实资产，仍必须走 Canon Checker。 |
 | `check/Canon Check.md` | Session 5 | 轻量版唯一默认 checker。 |
 | `analysis.md` / `persona.md` / `action.md` | Session 6 | 核心运行人格与行动边界。 |
-| `theme.md` | Session 8 | 默认联网生成 `web-verified` 主题层；只作深层主题 overlay，不覆盖 persona/analysis/canon。 |
+| `theme.md` | 后置可选 Session 8 | 用户授权后默认联网生成 `web-verified` 主题层；只作深层主题 overlay，不覆盖 persona/analysis/canon。 |
 | `SKILL.md` + memory files | Session 9 | 只布线，不重写人格。 |
 
 ### 6.3 轻量版检查点
@@ -312,30 +332,30 @@ Session 1: Source Crawl
 - 仍按 Session 6 的重度 spec 生成 `analysis.md` / `persona.md` / `action.md`。
 - 若跨时期差异明显，必须先决定默认运行时期。用户授权自主执行时，主 agent 写明默认时期、依据和风险；未授权时停下等用户选择。
 
-#### Session 8: Theme Research
+#### Session 8（后置可选）: Theme Research
 
+- 基础角色包完成并获得用户授权后才执行。
 - 读：`canon.md` + `analysis.md` + `persona.md`；必要时按 canon 指针下钻 `source_archive/character_rawcut.md` / `source_archive/source_index.md`。
-- 指令来源：`3theme-research-skill.md` / Theme Research Skill。
+- 指令来源：`workflow-stage-d-theme/workflow-stage-d-theme.md`。
 - 输出：`theme.md`。
 - 轻量纪律：
   - 默认使用联网 `web-verified` 模式；只有用户禁网、运行环境不可联网，或本轮明确要求 local-only 时才输出 local-only 并在文件头标记。
-  - 联网预算同重度 spec：fetch 上限 8 次 / 轮，每框架至多 1-2 次，预算不够收窄框架数量而不是降低阅读深度。
   - theme 只在哲学命题、文明伦理、思想谱系、文学/政治/宗教/心理等高阶话题中提供坐标。
   - theme 不得覆盖 `persona.md`、`analysis.md`、`canon.md`。
   - 不默认扩成 theme-library；材料不支持时生成薄版 `theme.md`，写明可用范围有限。
   - 不为 theme 额外加 checker；最终由 Route 与人工快速试聊发现明显污染。
 
-#### Session 9: Route
+#### Route
 
 - 仍按 Session 9 的重度 spec 生成最终 `SKILL.md`。
-- `theme.md` 作为 conditional overlay 接入：persona always-on，analysis 静默辅助深层理解，action 条件调用，theme 仅深层话题调用，canon/reference 只在事实或证据问题中下钻。
+- 首次生成不等待 Theme；若用户随后追加 `theme.md`，只刷新其 conditional route。persona always-on，analysis 静默辅助深层理解，action 条件调用，theme 仅深层话题调用，canon/reference 只在事实或证据问题中下钻。
 
 ### 6.5 严格模式升级
 
-出现以下情况时，从 10-session 基线中临时插回对应 checker：
+出现以下情况时，按 S1-S10 编号临时插回对应 checker：
 
 - 插回 Session 3 Rawcut Checker：source 很大、alias 风险高、rawcut 体量异常大/小、用户怀疑切错材料。
-- 插回 Session 7 Distill Checker + Smoke Test：persona/action 工程腔、声线不稳、时期混淆、theme 疑似压过人格。
+- 插回 Session 7 Distill Checker + Smoke Test：persona/action 工程腔、声线不稳、时期混淆或 analysis 疑似压过人格。
 - 插回 Session 10 Skill Checker：准备发布角色包、routing/memory/command 规则复杂、或用户要求最终验收。
 
-轻量版不默认跑旧式完整 Session 10。它是发布前验收工具，不是日常蒸馏主链。
+轻量版不默认跑 Session 10。它是发布前验收工具，不是日常蒸馏主链。

@@ -1,8 +1,3 @@
----
-name: material-trace-step1-source-crawl
-description: Step 1 of material trace. Capture or crawl raw character source materials into source_archive/ without filtering by target character. Use for Source Crawl sessions before rawcut/canon.
----
-
 # Material Trace Step 1 - Source Crawl
 
 ## Purpose
@@ -115,6 +110,7 @@ Use this structure:
 确认搜索名：{confirmed names}
 采用编码：{encoding}
 source manifest：`source_manifest.json`（本文件位于 `source_archive/` 内）
+大源：{是 / 否；仅按用户原始材料合计是否超过 200 KB 判断，不计 source_index、manifest、check 等生成文件}
 
 ## 1. 来源清单
 

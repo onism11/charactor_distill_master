@@ -1,10 +1,52 @@
 # 角色蒸馏器 | Character Distill Master
 
-> 证据驱动的开源虚拟角色蒸馏框架——从小说、游戏剧情、台词与设定中提炼人物的思维、性格、关系、行动与记忆，生成兼容 Agent Skills 的可运行角色，让虚构人物带着完整人格重新开口。
+> 证据驱动的开源角色蒸馏框架——从小说、游戏剧情、台词与设定中保留原文场景、时期与因果，蒸馏人物的思维、声线、关系与记忆，生成可运行的 Agent Skill，让虚构人物带着完整人格重新开口。
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-2f6f5e.svg)](./LICENSE)
 
 它不是人设摘要器，也不只是让模型模仿几句口头禅。
 
 角色蒸馏器试着保留更难复制的东西：人物如何理解世界，为什么作出某种选择，面对不同对象时怎样改变距离，以及那些无法被几条标签解释干净的矛盾。
+
+## 三分钟开始
+
+### 1. 获取工作流
+
+```bash
+git clone https://github.com/onism11/charactor_distill_master.git
+```
+
+将 [`workflows/charactor-distiller_Sv2/`](./workflows/charactor-distiller_Sv2/) 作为 Skill 目录，只从其中的 `SKILL.md` 启动。兼容 Agent Skills 的运行时也可以把该目录复制到自己的 skills 目录。
+
+### 2. 提供人物与原材料
+
+最小输入只有两项：人物是谁，原材料在哪里。可以直接把下面这段交给 Agent：
+
+```text
+请使用 persona-skill-distiller 蒸馏以下角色。
+
+人物：{角色名}
+原材料：
+- {本地文件或目录路径}
+- {URL，可选}
+
+目标时期：{可选；不填则在材料扫描后确认}
+已知别名 / 排除对象：{可选}
+```
+
+原材料可以是小说、剧情文本、台词集、人物故事、语音、设定文件、网页链接或它们的组合。目标时期与别名存在歧义时，工作流会在 Source Crawl 后集中确认，不要求用户预先整理完整规则。
+
+### 3. 决定是否追加 Theme 与 Audit
+
+基础角色包先独立完成。结束时 Agent 应询问：
+
+```text
+基础角色包已完成。是否继续：
+1. 追加 Theme Research，为哲学、政治、宗教、文学或心理等深层话题建立外部坐标；
+2. 运行隔离答题 Audit，由独立 Answer Agent 答题，再由独立 Review Agent 评审。
+```
+
+这两项可以单选、全选或全部跳过。选择 Theme 后只新增 `theme.md` 并刷新其条件路由；选择 Audit 不会改写角色包，只会生成测试与评审结果。
 
 ## 先看成品
 
@@ -20,8 +62,21 @@
 
 这里选择第三条路：保留完整证据仓，但只在正确阶段把正确材料交给模型。
 
-```text
-Source Crawl → Rawcut → Canon → Distill → Theme → Route → Audit
+```mermaid
+flowchart LR
+    I["人物 + 原材料"] --> S["Source Crawl"]
+    S --> R["Rawcut"]
+    R --> C["Canon"]
+    C --> D["Distill"]
+    D --> P["Route / 基础角色包"]
+    P --> Q["后置选项（可多选）"]
+    Q -.->|Theme| T["Theme Research"]
+    T --> U["刷新 Theme 路由"]
+    U --> E["完成"]
+    Q -.->|Audit| F["Answer Agent"]
+    F --> G["Review Agent"]
+    G --> E
+    Q -->|全部跳过| E
 ```
 
 - **Source Crawl** 完整归档来源并建立可回查索引。
@@ -29,7 +84,22 @@ Source Crawl → Rawcut → Canon → Distill → Theme → Route → Audit
 - **Canon** 整理时期、关系、关键记忆、剧情因果与声线依据，但不抢先替人物下人格结论。
 - **Distill** 分开生成 `analysis.md`、`persona.md` 与 `action.md`，让理解、人格和行动纪律各守自己的边界。
 - **Route** 让日常对话保持轻盈，只在事实、深层分析、主题研究或记忆真正需要时加载对应层。
+- **Theme** 是授权后追加的深层话题坐标，不覆盖人物本身。
 - **Audit** 用隔离答题和独立评审检验真实回答，而不只检查 Markdown 是否整齐。
+
+基础包的运行文件为：
+
+```text
+SKILL.md
+persona.md
+analysis.md
+action.md
+canon.md
+memory.md
+long_memory.md
+```
+
+`source_archive/` 保存证据仓，`check/` 保存检查结果；用户追加 Theme 时，主目录再增加 `theme.md`。
 
 ## 精妙的原材料处理
 
@@ -69,17 +139,20 @@ Source Crawl → Rawcut → Canon → Distill → Theme → Route → Audit
 
 记忆不会静默吞下所有聊天。读取由命令或明确的连续性需求触发；`/sum` 先生成草稿，得到确认后才写入；构建 Skill、调试 prompt、`/break` 与 `/out` 等角色外讨论不会污染人物关系记忆。
 
-## 这个版本适合什么
+## 当前公开版本
 
-[charactor-distiller_Sv2](./workflows/charactor-distiller_Sv2/) 适合从小说、游戏剧情、台词集、人物故事或混合设定材料中，制作重视人物质感和长期对话能力的角色 Skill。
+[S_微调版](./workflows/charactor-distiller_Sv2/) 以 Before-B/S 工作流为底本，只加入经过裁决的轻量改动：单一 Skill 入口、按需 controller 启动提示、基础包完成后的可选 Theme 与 F/G 答题 Audit、按需 Skill Checker、S6 的一条解释权提示，以及仅在原始材料超过 200 KB 时开放的大 rawcut 交接。它不是 rerun/newversion 的复杂编排，也不包含实验产物。
+
+它适合从小说、游戏剧情、台词集、人物故事或混合设定材料中，制作重视人物质感和长期对话能力的角色 Skill。
 
 它尤其适合那些不能被“温柔、理性、强大”几句话概括的人物：有明显时期变化、复杂关系、制度处境、价值冲突，或者需要在日常聊天与深度讨论之间自然切换。
 
-## 使用方式
+## 运行边界
 
-1. 将 `workflows/charactor-distiller_Sv2/` 作为 Skill 目录。
-2. 从 `SKILL.md` 启动，按阶段读取对应文件，不要一次性预载全部 prompt。
-3. 将原始材料和生成包放在独立运行目录，避免污染工作流源码。
+- 只从根 `SKILL.md` 启动，按阶段读取对应文件，不一次性预载全部 prompt。
+- `workflow-prompts/` 是生产控制面；每次只给当前执行角色一份对应启动提示，不复制进最终角色包。
+- F/G 只在用户选择答题 Audit 或横向评测时启动。
+- 原始材料和生成包放在独立运行目录，避免污染工作流源码。
 
 ## 设计来源与边界
 
@@ -87,4 +160,4 @@ Source Crawl → Rawcut → Canon → Distill → Theme → Route → Audit
 
 本仓库只发布工作流主文件，不包含原始角色材料、私有运行日志、真实用户画像或历史对话记忆。仓库内的 `memory.md` 与 `long_memory.md` 均为空白模板。
 
-S-v2 的准确文件来源见 [PROVENANCE.md](./workflows/charactor-distiller_Sv2/PROVENANCE.md)。
+S_微调版的准确文件来源与发布边界见 [PROVENANCE.md](./workflows/charactor-distiller_Sv2/PROVENANCE.md)。

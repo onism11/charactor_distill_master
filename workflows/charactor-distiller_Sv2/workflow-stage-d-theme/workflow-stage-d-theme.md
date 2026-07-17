@@ -1,15 +1,10 @@
----
-name: theme-research
-description: Generate theme.md for a virtual character by researching philosophical, literary, ethical, political, religious, psychological, or aesthetic concepts that deepen the character's dialogue. Use after character_rawcut.md, canon.md, and draft persona/action files exist. This skill defaults to web research unless the user forbids it, compares character evidence against external philosophy/wiki sources, and outputs a grounded theme layer without overwriting core persona.
----
-
-# Theme Research Skill
+# Theme Research Stage Prompt
 
 ## Purpose
 
 Generate `theme.md`: a depth layer that helps a character speak with richer ideas, sharper debate frames, and more consistent worldview.
 
-This skill does **not** rewrite `persona.md`. It adds conceptual support for deeper conversations.
+This stage does **not** rewrite `persona.md`. It adds conceptual support for deeper conversations.
 
 `theme.md` has two valid output modes:
 
@@ -305,7 +300,7 @@ Why bad:
 
 ## Handoff
 
-Send `theme.md` to later routing and audit skills together with:
+Send `theme.md` to the later route and audit stages together with:
 
 - `persona.md`
 - `action.md`
