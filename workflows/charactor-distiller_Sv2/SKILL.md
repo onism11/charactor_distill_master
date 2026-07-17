@@ -1,6 +1,11 @@
-# 0workflow.md - 角色蒸馏多 session 工作流规范
+---
+name: charactor-distiller-sv2
+description: 将角色剧情、台词、人物故事与设定蒸馏为可运行角色 Skill 的多阶段工作流，覆盖材料追踪、人格蒸馏、主题研究、路由与审计。
+---
 
-本文件是 Persona Skill Distiller 的 workflow 操作手册。它只规定阶段、输入、输出、验收与返修；具体生成模板仍到对应 skill 文件读取。
+# Character Distiller S-v2
+
+本文件是 Persona Skill Distiller 的 Skill 入口。它只规定阶段、输入、输出、验收与返修；具体生成模板仍到对应阶段文件读取。
 
 Material Trace 已拆成三份 step 文件；原材料阶段以当前 `1material-trace-skill/step1-source-crawl.md`、`step2-rawcut.md`、`step3-canon.md` 为准。
 
