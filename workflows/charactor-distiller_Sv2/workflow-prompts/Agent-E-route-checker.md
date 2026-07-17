@@ -7,6 +7,7 @@
 执行边界：
 
 - S9 只生成 runtime wiring，不重写 `analysis.md` / `persona.md` / `action.md`。
+- 用户后置追加 `theme.md` 时，S9 只刷新 theme 的 conditional route，不改其他角色文件。
 - S10 只审查，不修正文；需要返修时只写最小修改建议。
 - `persona` always-on；analysis 静默辅助；action/canon/theme/memory 按根 workflow 的条件触发。
 - 不得让 action 变成普通对话发动机，不得新增文体强制行。
