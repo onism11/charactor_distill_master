@@ -9,7 +9,14 @@
 - 当前最后一项 workflow 语义改动：`3ea90e4`（S1 大源单门）。
 - 生产语义底本：Before-B/S；不采用 rerun、newversion 或失败实验的全链复杂编排。
 
-公开副本只做两类发布适配，不改变生产 prompt：`AGENTS.md` 移除了未公开的 workbench/历史归档指针；根 `SKILL.md` 移除了一个未随主体发布的历史 donor 路径。远端原有的空白 `memory.md` 与 `long_memory.md` 模板原样保留。
+公开副本保持各 `workflow-stage-*` 生成 / 检查正文不变，只在公开编排与包装层做适配：
+
+- `AGENTS.md` 移除未公开的 workbench 与历史归档指针。
+- 根 `SKILL.md` 与 Agent B/C 移除未随主体发布的 donor、角色专属 benchmark 引用。
+- 根 `SKILL.md` 与 Agent D/E 增加最小启动契约，并把 Theme 与 F/G 答题 Audit 明确为基础包完成后的后置选项。
+- README 与 LICENSE 负责公开使用说明和授权；空白 `memory.md`、`long_memory.md` 模板保持原样。
+
+这些改动会调整公开 controller 的执行顺序，但不改写 Source、Rawcut、Canon、Distill、Theme、Route 或 Audit 的阶段正文。
 
 ## 发布范围
 

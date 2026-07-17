@@ -1,6 +1,6 @@
 # 角色蒸馏器 | Character Distill Master
 
-> 证据驱动的开源角色蒸馏框架——从小说与游戏剧情中保留原文场景、时期与因果，蒸馏人物的思维、声线、关系与记忆，生成可直接运行的 Agent Skill。
+> 证据驱动的开源角色蒸馏框架——从小说、游戏剧情、台词与设定中保留原文场景、时期与因果，蒸馏人物的思维、声线、关系与记忆，生成可运行的 Agent Skill，让虚构人物带着完整人格重新开口。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f6f5e.svg)](./LICENSE)
 
@@ -46,7 +46,7 @@ git clone https://github.com/onism11/charactor_distill_master.git
 2. 运行隔离答题 Audit，由独立 Answer Agent 答题，再由独立 Review Agent 评审。
 ```
 
-选择 Theme 后只新增 `theme.md` 并刷新其条件路由；选择 Audit 不会改写角色包，只会生成测试与评审结果。两项都可以不选。
+这两项可以单选、全选或全部跳过。选择 Theme 后只新增 `theme.md` 并刷新其条件路由；选择 Audit 不会改写角色包，只会生成测试与评审结果。
 
 ## 先看成品
 
@@ -69,12 +69,14 @@ flowchart LR
     R --> C["Canon"]
     C --> D["Distill"]
     D --> P["Route / 基础角色包"]
-    P --> Q{"用户后置授权"}
-    Q -->|Theme| T["Theme Research"]
+    P --> Q["后置选项（可多选）"]
+    Q -.->|Theme| T["Theme Research"]
     T --> U["刷新 Theme 路由"]
-    Q -->|Audit| F["Answer Agent"]
+    U --> E["完成"]
+    Q -.->|Audit| F["Answer Agent"]
     F --> G["Review Agent"]
-    Q -->|均不需要| E["完成"]
+    G --> E
+    Q -->|全部跳过| E
 ```
 
 - **Source Crawl** 完整归档来源并建立可回查索引。
@@ -139,7 +141,7 @@ long_memory.md
 
 ## 当前公开版本
 
-[S_微调版](./workflows/charactor-distiller_Sv2/) 以 Before-B/S 工作流为底本，只加入经过裁决的轻量改动：单一 Skill 入口、按需 controller 启动提示、可选 Theme 与 Skill Checker、S6 的一条解释权提示，以及仅在原始材料超过 200 KB 时开放的大 rawcut 交接。它不是 rerun/newversion 的复杂编排，也不包含实验产物。
+[S_微调版](./workflows/charactor-distiller_Sv2/) 以 Before-B/S 工作流为底本，只加入经过裁决的轻量改动：单一 Skill 入口、按需 controller 启动提示、基础包完成后的可选 Theme 与 F/G 答题 Audit、按需 Skill Checker、S6 的一条解释权提示，以及仅在原始材料超过 200 KB 时开放的大 rawcut 交接。它不是 rerun/newversion 的复杂编排，也不包含实验产物。
 
 它适合从小说、游戏剧情、台词集、人物故事或混合设定材料中，制作重视人物质感和长期对话能力的角色 Skill。
 

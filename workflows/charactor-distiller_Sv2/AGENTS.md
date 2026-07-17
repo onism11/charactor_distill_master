@@ -10,7 +10,7 @@
 - `workflow-stage-b-distill/workflow-stage-b-distill.md` 是唯一公开的 Distill 主线。
 - active 不使用 `answer-agent-prompt.md`；F/G 只在用户明确要求答题测试或横评时启动。
 
-当前公开内容是 **S_微调版**：以 Before-B/S 的生产语义为底本，只保留已经明确批准的轻量增量，包括单入口结构、可选 Theme/Skill Checker、S6 解释权提示，以及原始材料超过 200 KB 时才开放 Large Rawcut Handoff 的 S1 前置标记。
+当前公开内容是 **S_微调版**：以 Before-B/S 的生产语义为底本，只保留已经明确批准的轻量增量，包括单入口结构、基础包完成后的可选 Theme 与 F/G 答题 Audit、按需 Skill Checker、S6 解释权提示，以及原始材料超过 200 KB 时才开放 Large Rawcut Handoff 的 S1 前置标记。
 
 ## 设计原则
 
