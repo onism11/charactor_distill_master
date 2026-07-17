@@ -2,7 +2,7 @@
 
 本文件是 Persona Skill Distiller 的 workflow 操作手册。它只规定阶段、输入、输出、验收与返修；具体生成模板仍到对应 skill 文件读取。
 
-Material Trace 已拆成三份 step 文件；原材料阶段以当前 `1material-trace-skill/step1-source-crawl.md`、`step2-rawcut.md`、`step3-canon.md` 为准。拆分前基线仅作历史参照：`1material-trace-skill/versions/1material-trace-skill.before-workflow-split.md`。
+Material Trace 已拆成三份 step 文件；原材料阶段以当前 `1material-trace-skill/step1-source-crawl.md`、`step2-rawcut.md`、`step3-canon.md` 为准。
 
 ---
 
@@ -157,7 +157,7 @@ long_memory.md
 ### Session 6: Distill
 
 - 读：定稿 `canon.md` + `source_archive/character_rawcut.md` 或大 rawcut sidecar + 用户目标用途 / 默认时期。
-- 指令来源：`2distill-skill-before.md` 全文；`2distill-skill.hard.md` / `2distill-skill.soft.md` 仅作 reference donor，不作为默认主线。
+- 指令来源：`2distill-skill/2distill-skill-before.md` 全文。
 - 输出：`analysis.md` / `persona.md` / `action.md`。
 - 不在本 session 生成 theme；Theme Research 进入 Session 8。
 - 通过标准：产物可运行、可审计，但不把 persona/action 写成证据报告。
@@ -178,7 +178,7 @@ long_memory.md
 ### Session 8: Theme Research
 
 - 读：`canon.md` + `analysis.md` + `persona.md` + `action.md`；必要时按 canon 指针下钻 `source_archive/character_rawcut.md` / `source_archive/source_index.md`。
-- 指令来源：`3theme-research-skill.md` / Theme Research Skill。
+- 指令来源：`3theme-research-skill/3theme-research-skill.md`。
 - 输出：`theme.md`。
 - 默认模式：使用联网 `web-verified`；只有用户禁网、运行环境不可联网，或本轮明确要求 local-only 时才输出 local-only 并在文件头标记。
 - 联网预算：fetch（读页）上限 8 次 / 轮，搜索查询不计入。每框架至多 1-2 次 fetch，正式框架优先；预算不够时收窄框架数量，不降低单源阅读深度。
@@ -187,7 +187,7 @@ long_memory.md
 ### Session 9: Route
 
 - 读：所有定稿产物：`canon.md` / `persona.md` / `analysis.md` / `action.md` / `relationship.md` / `theme.md` / memory templates 等。
-- 指令来源：`4auto-route-skill.md` 全文。
+- 指令来源：`4auto-route-skill/4auto-route-skill.md` 全文。
 - 输出：最终角色包的 `SKILL.md`；必要时按模板放置 `memory.md` / `long_memory.md`。
 - 通过标准：只布线，不重写人格；persona always-on；每个新问题先独立判断路由；analysis 可静默处理动机、因果、关系逻辑、价值冲突、反事实判断与深层人物理解，但不把普通对话自动改写成分析稿；action 仅处理拒绝、任务行为、决策、边界、场景与对象距离变化；canon/source_archive 处理事实、时间线、制度、历史与反事实因果。
 

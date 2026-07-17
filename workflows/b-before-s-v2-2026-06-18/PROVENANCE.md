@@ -1,22 +1,22 @@
 # S-v2 Workflow Snapshot
 
-This directory reconstructs the workflow inputs used by the 2026-06-18 `S-v2` matrix experiment.
+这是 2026-06-18 `S-v2` 矩阵实验实际使用的工作流输入快照，不等同于表现异常出色的 `variant-B-before` 成品包。
 
-## Composition
+## 来源
 
-- `0workflow.md`, skill1, skill3, skill4, and skill5: commit `a5fdc40` (`test: run distill matrix vs natural phase 3`).
-- skill2 directory: commit `a5fdc40`, except `2distill-skill/2distill-skill-before.md`.
-- `2distill-skill/2distill-skill-before.md`: commit `5c952d7`, the exact matrix prompt identified by the experiment gate summary.
+- `0workflow.md`、skill1、skill3、skill4、skill5：提交 `a5fdc40`。
+- skill2 的主目录结构：提交 `a5fdc40`。
+- `2distill-skill/2distill-skill-before.md`：提交 `5c952d7`，即实验明确调用的矩阵版 Distill prompt。
 
-This mixed provenance is intentional. The S-v2 experiment explicitly loaded the old matrix distill prompt with `git show 5c952d7:...`, while the rest of the workflow used the then-current files. Treat this directory as an immutable historical snapshot, not an active mainline.
+这种混合来源是实验本身的真实状态：S-v2 运行时用 `git show 5c952d7:...` 读取旧矩阵版 Distill，其余阶段使用当时最新文件。核心发布版只额外清理了已省略 donor 的引用，并把三个阶段入口改为当前目录中的完整相对路径；生成规则未改。
 
-## Included
+## 发布范围
 
 - `0workflow.md`
-- `1material-trace-skill/`
-- `2distill-skill/`
-- `3theme-research-skill/`
-- `4auto-route-skill/`
-- `5audit-test-skill/`
+- `1material-trace-skill/` 的主路由与三个步骤
+- `2distill-skill/2distill-skill-before.md`
+- `3theme-research-skill/3theme-research-skill.md`
+- `4auto-route-skill/` 的主 Route 与空白 Memory 模板
+- `5audit-test-skill/` 的 Audit 与隔离答题提示
 
-Experiment evidence remains at `experiments/2026-06-distill-matrix-vs-natural/`.
+历史 donor、hard/soft/hardaction 变体、旧 versions、原始材料、角色成品和实验答卷均未纳入发布。
