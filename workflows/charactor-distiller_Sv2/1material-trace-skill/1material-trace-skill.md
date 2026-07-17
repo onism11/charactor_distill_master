@@ -15,7 +15,7 @@ This is the lightweight router for the material trace phase. Do not use this fil
 
 ## Rule
 
-In a workflow session, load only the matching step file plus the artifacts named by `../0workflow.md`. Do not preload all three step files.
+In a workflow session, load only the matching step file plus the artifacts named by `../SKILL.md`. Do not preload all three step files.
 
 ## Outputs By Step
 

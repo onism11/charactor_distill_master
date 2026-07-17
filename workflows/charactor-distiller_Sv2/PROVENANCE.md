@@ -4,15 +4,15 @@
 
 ## 来源
 
-- `0workflow.md`、skill1、skill3、skill4、skill5：提交 `a5fdc40`。
+- 原 `0workflow.md`、skill1、skill3、skill4、skill5：提交 `a5fdc40`。
 - skill2 的主目录结构：提交 `a5fdc40`。
 - `2distill-skill/2distill-skill-before.md`：提交 `5c952d7`，即实验明确调用的矩阵版 Distill prompt。
 
-这种混合来源是实验本身的真实状态：S-v2 运行时用 `git show 5c952d7:...` 读取旧矩阵版 Distill，其余阶段使用当时最新文件。核心发布版只额外清理了已省略 donor 的引用，并把三个阶段入口改为当前目录中的完整相对路径；生成规则未改。
+这种混合来源是实验本身的真实状态：S-v2 运行时用 `git show 5c952d7:...` 读取旧矩阵版 Distill，其余阶段使用当时最新文件。核心发布版只额外清理了已省略 donor 的引用、规范了阶段相对路径，并将 `0workflow.md` 改名为带合法 frontmatter 的 `SKILL.md`；生成规则未改。
 
 ## 发布范围
 
-- `0workflow.md`
+- `SKILL.md`
 - `1material-trace-skill/` 的主路由与三个步骤
 - `2distill-skill/2distill-skill-before.md`
 - `3theme-research-skill/3theme-research-skill.md`
