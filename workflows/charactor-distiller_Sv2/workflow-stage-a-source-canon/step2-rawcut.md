@@ -1,8 +1,3 @@
----
-name: material-trace-step2-rawcut
-description: Step 2 of material trace. Use source_archive/ and source_archive/source_index.md plus confirmed target names to produce source_archive/character_rawcut.md as raw scene slices, without canon or persona inference.
----
-
 # Material Trace Step 2 - Rawcut
 
 ## Purpose
@@ -59,17 +54,11 @@ For each hit, extract the smallest useful fragment that still preserves context:
 - wiki/profile text: the subsection or bullet containing the hit
 - script text: scene heading, speaker, and relevant lines
 
-### 结构化来源规则
-
-若 source unit 本身已是结构化爬取稿（自带剧情梗概 / 出场人物 / 情境标记等字段）：
-
-- 命中判定只认单元正文与出场人物字段；模板说明、规则注释中的字面命中无效，不得据此保留单元。
-- 不整 unit 复制：只摘录目标角色相关的情境块进"原文裁剪"；单元自带的梗概 / 设定字段直接复用为对应 metadata，不重写。
-- 无目标内容的 unit 不进 § 1；在 `## 3. 未命中单元梗概索引` 留一行（单元 id + 1 句梗概），供 canon 理解剧情连续性。
-
 Output this step into `source_archive/character_rawcut.md`. Legacy packages may place the same file at `reference/character_rawcut.md`, but the final package root should not keep rawcut as a main file.
 
 ### Large Rawcut Handoff
+
+只有 Source Crawl 已标记“大源：是”时，本节才生效；否则只生成完整 `character_rawcut.md`。进入本节后仍沿用下列原有触发条件。
 
 If any trigger is met, keep the full `source_archive/character_rawcut.md` as evidence storage and also write sidecar files for later sessions:
 
@@ -110,7 +99,7 @@ alias gate：{每个 confirmed alias 的 scope / anchor / collision_risk；suspi
 
 ## 1. Scene Slices
 
-按原文出现顺序列举。每个 slice 强制包含 8 个 metadata 字段 + 原文裁剪 + ≤ 1 句备注；出现设定为可选第 9 项。
+按原文出现顺序列举。每个 slice 强制包含 7 个 metadata 字段 + 原文裁剪 + ≤ 1 句备注。
 
 ### S001：{场景标题}
 
@@ -121,8 +110,6 @@ alias gate：{每个 confirmed alias 的 scope / anchor / collision_risk；suspi
 - 是否疑似：{否 / 部分疑似（说明疑似的具体指代）}
 - 场景类型：{对话 / 行动 / 旁白 / 书信 / 语音 / wiki 条目}
 - 裁剪原因：{一句话说明为什么保留}
-- 剧情梗概：{1-3 条要点，长单元可至 5 条；只写事件不写判断}
-- 出现设定：{可选；仅当本场景出现影响理解的新概念时，每概念一行}
 
 原文裁剪：
 > {主体内容：保留原文，技术性清洗允许}
@@ -155,13 +142,6 @@ alias gate：{每个 confirmed alias 的 scope / anchor / collision_risk；suspi
     > {代表性片段，够 canon 判断即可——全文已在 `source_crawl`，不必重抄长段}
 
 密度规则（防 § 2 变第二个 source_crawl）：每个来源文件只保留**最关键的 1–5 条**；若某类材料在 `source_crawl` 大量出现但无显式名字命中，**至少保留一条代表性卡**。代表性选择锚：优先选出现次数最多、或与目标角色互动最密集的段落。
-
----
-
-## 3. 未命中单元梗概索引（仅结构化来源时）
-
-- {U0001 单元标题}：{1 句事件梗概}
-- {U0005 单元标题}：{1 句事件梗概}
 ```
 
 Write the alias gate as literal resolved text, not shell or template expressions. A header such as `confirmed=$(...)` is invalid.
@@ -174,7 +154,8 @@ Write the alias gate as literal resolved text, not shell or template expressions
 - 不在 trace 阶段做人格判断，不写 "他很谨慎" / "她很温柔"。
 - **不强行分类**到 "直接台词 / 关键行动 / 重大选择" 等栏目；分类是 distill 阶段的职责，不是 trace 的职责。
 - 未确认指代与无显式名字的辅助材料必须放 § 2，**禁止**并入 § 1。
-- metadata 8 字段顺序固定（出现设定为可选第 9 项），便于下游 distill 按字段提取。剧情梗概只写事件，不写人格判断。
+- metadata 7 字段顺序固定，便于下游 distill 按字段提取。
+- “时期 / 状态”无法从当前 slice 或来源标签直接确认时写“不明”，不得猜测。
 - **大源分批**：若 `source_archive/` 过大、单次放不下全量扫切，按来源文件或章节分批执行 rawcut——每批读入 archive 中一个或多个来源单元，按确认名切片输出 slices；各批完成后合并成完整 `source_archive/character_rawcut.md`（保留原文出现顺序、统一 S 编号）。§ 2 可疑区同理分批收集后合并。
 
 ### 失败示例
@@ -199,7 +180,6 @@ Write the alias gate as literal resolved text, not shell or template expressions
 - 是否疑似：否
 - 场景类型：对话
 - 裁剪原因：体现高压审问 + "代价 / 风险" 主题词
-- 剧情梗概：星期日审问砂金，以基石保管权施压，要求其交代隐瞒的信息。
 
 原文裁剪：
 > 星期日："我从不承担任何风险。基石必须由家族来保管。"

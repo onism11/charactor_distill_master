@@ -1,8 +1,3 @@
----
-name: material-trace-step3-canon
-description: Step 3 of material trace. Use source_archive/character_rawcut.md to produce canon.md as a structured middle-layer character fact asset, without reading Step 1/2 instructions or writing persona/theme.
----
-
 # Material Trace Step 3 - Canon
 
 ## Purpose
@@ -73,8 +68,6 @@ When a relationship, event cause, or period transition is unclear, use `source_a
 - 这里只整理：身份 / 关键记忆 / 核心设定概念 / 关键剧情节点 / 人物关系 / 口吻依据 / 易写偏点。
 - 不在这里展开高层哲学分析；那属于 `analysis.md`。
 
-## 资料边界
-
 ## 0. 时间脊柱 / 阶段归位
 
 ## 1. 基础身份认知
@@ -88,20 +81,6 @@ When a relationship, event cause, or period transition is unclear, use `source_a
 ## 9. 待回查 / 未归位
 ## 10. 调用建议
 ```
-
----
-
-### ## 资料边界 子结构
-
-声明本 canon 的资料覆盖范围，供运行时说明时效、后续更新判断增量。是元数据声明，保持简短，不展开成剧情概述：
-
-- 资料覆盖到：{版本 / 日期 / 主线进度}
-- 依据来源：{哪些来源 / `source_index` 指针}
-- 已知未覆盖：{发布在此之后、尚未纳入的新主线 / 活动 / 材料}
-
-更新策略：新主线材料到来时，默认只重跑 S1/S2/S4 更新本文件；**不重跑 S6**（persona/analysis/action），除非新 canon 明确推翻默认时期、核心关系、价值排序或声线依据。
-
-材料不支持分期、或单一稳定版本的角色，本段退化为一行"资料截至 {点}，无已知未覆盖增量"即可，不硬凑三项。
 
 ---
 
@@ -565,6 +544,6 @@ Send the next distillation skill:
 - user exclusions
 - `au_overrides.md`（仅当用户提供 AU 设定时才有此文件；distill skill 默认不读取，只在用户明确要求 AU 蒸馏时挂载）
 
-The most important raw evidence input for core persona distillation is `source_archive/character_rawcut.md`. Each scene slice 的 metadata 8 字段（来源 / 命中词 / 参与者 / 时期 / 是否疑似 / 场景类型 / 裁剪原因 / 剧情梗概；出现设定为可选第 9 项）是 distill 阶段按对象 / 场景 / 时期重组角色维度的抓手。
+The most important raw evidence input for core persona distillation is `source_archive/character_rawcut.md`. Each scene slice 的 metadata 7 字段（来源 / 命中词 / 参与者 / 时期 / 是否疑似 / 场景类型 / 裁剪原因）是 distill 阶段按对象 / 场景 / 时期重组角色维度的抓手。
 
 Do not send huge unrelated source dumps unless the next skill explicitly asks for raw verification.

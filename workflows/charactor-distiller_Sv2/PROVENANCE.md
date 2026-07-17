@@ -1,22 +1,29 @@
-# S-v2 Workflow Snapshot
+# S_微调 Workflow Snapshot
 
-这是 2026-06-18 `S-v2` 矩阵实验实际使用的工作流输入快照，不等同于表现异常出色的 `variant-B-before` 成品包。
+这是 2026-07-17 发布的 `S_微调` 工作流主体。公开目录沿用既有 `charactor-distiller_Sv2` 路径，以避免无必要的链接迁移；版本身份以本文件和 Git 提交为准。
 
-## 来源
+## 来源身份
 
-- 原 `0workflow.md`、skill1、skill3、skill4、skill5：提交 `a5fdc40`。
-- skill2 的主目录结构：提交 `a5fdc40`。
-- `2distill-skill/2distill-skill-before.md`：提交 `5c952d7`，即实验明确调用的矩阵版 Distill prompt。
+- 导出来源：本地 active `lastestversion/`，提交 `bfc37ef5763cf494e37371f24eb4338a3478c3c4`。
+- 单一 Skill 入口迁移：`43cdb43`。
+- 当前最后一项 workflow 语义改动：`3ea90e4`（S1 大源单门）。
+- 生产语义底本：Before-B/S；不采用 rerun、newversion 或失败实验的全链复杂编排。
 
-这种混合来源是实验本身的真实状态：S-v2 运行时用 `git show 5c952d7:...` 读取旧矩阵版 Distill，其余阶段使用当时最新文件。核心发布版只额外清理了已省略 donor 的引用、规范了阶段相对路径，并将 `0workflow.md` 改名为带合法 frontmatter 的 `SKILL.md`；生成规则未改。
+公开副本只做两类发布适配，不改变生产 prompt：`AGENTS.md` 移除了未公开的 workbench/历史归档指针；根 `SKILL.md` 移除了一个未随主体发布的历史 donor 路径。远端原有的空白 `memory.md` 与 `long_memory.md` 模板原样保留。
 
 ## 发布范围
 
-- `SKILL.md`
-- `1material-trace-skill/` 的主路由与三个步骤
-- `2distill-skill/2distill-skill-before.md`
-- `3theme-research-skill/3theme-research-skill.md`
-- `4auto-route-skill/` 的主 Route 与空白 Memory 模板
-- `5audit-test-skill/` 的 Audit 与隔离答题提示
+- 唯一入口 `SKILL.md` 与公开协作边界 `AGENTS.md`
+- `workflow-stage-a-source-canon/`
+- `workflow-stage-b-distill/` 的主线
+- `workflow-stage-d-theme/`
+- `workflow-stage-e-route/` 与空白 Memory 模板
+- `workflow-stage-fg-audit/`；通用 smoke 题型已内置在 Audit 主文件中
+- `workflow-prompts/Agent-A...G` 按需 controller 启动提示
 
-历史 donor、hard/soft/hardaction 变体、旧 versions、原始材料、角色成品和实验答卷均未纳入发布。
+## 明确排除
+
+- experiments、versions、历史角色包、原始材料、运行日志、workbench 与评分工作台
+- hard/soft/hardaction reference donor 与角色专属 smoke/benchmark 答卷
+- 真实用户画像、历史对话记忆与本地路径
+- `answer-agent-prompt.md`；隔离答题只在明确测试时按需传入 `workflow-prompts/Agent-F-answer-test.md`

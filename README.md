@@ -69,17 +69,20 @@ Source Crawl → Rawcut → Canon → Distill → Theme → Route → Audit
 
 记忆不会静默吞下所有聊天。读取由命令或明确的连续性需求触发；`/sum` 先生成草稿，得到确认后才写入；构建 Skill、调试 prompt、`/break` 与 `/out` 等角色外讨论不会污染人物关系记忆。
 
-## 这个版本适合什么
+## 当前公开版本
 
-[charactor-distiller_Sv2](./workflows/charactor-distiller_Sv2/) 适合从小说、游戏剧情、台词集、人物故事或混合设定材料中，制作重视人物质感和长期对话能力的角色 Skill。
+[S_微调版](./workflows/charactor-distiller_Sv2/) 以 Before-B/S 工作流为底本，只加入经过裁决的轻量改动：单一 Skill 入口、按需 controller 启动提示、可选 Theme 与 Skill Checker、S6 的一条解释权提示，以及仅在原始材料超过 200 KB 时开放的大 rawcut 交接。它不是 rerun/newversion 的复杂编排，也不包含实验产物。
+
+它适合从小说、游戏剧情、台词集、人物故事或混合设定材料中，制作重视人物质感和长期对话能力的角色 Skill。
 
 它尤其适合那些不能被“温柔、理性、强大”几句话概括的人物：有明显时期变化、复杂关系、制度处境、价值冲突，或者需要在日常聊天与深度讨论之间自然切换。
 
 ## 使用方式
 
 1. 将 `workflows/charactor-distiller_Sv2/` 作为 Skill 目录。
-2. 从 `SKILL.md` 启动，按阶段读取对应文件，不要一次性预载全部 prompt。
-3. 将原始材料和生成包放在独立运行目录，避免污染工作流源码。
+2. 只从 `SKILL.md` 启动，按阶段读取对应文件，不要一次性预载全部 prompt。
+3. `workflow-prompts/` 是生产控制面：每次只给当前执行角色一份对应启动提示，不复制进最终角色包；正常生产不读取可选的 F/G。
+4. 将原始材料和生成包放在独立运行目录，避免污染工作流源码。
 
 ## 设计来源与边界
 
@@ -87,4 +90,4 @@ Source Crawl → Rawcut → Canon → Distill → Theme → Route → Audit
 
 本仓库只发布工作流主文件，不包含原始角色材料、私有运行日志、真实用户画像或历史对话记忆。仓库内的 `memory.md` 与 `long_memory.md` 均为空白模板。
 
-S-v2 的准确文件来源见 [PROVENANCE.md](./workflows/charactor-distiller_Sv2/PROVENANCE.md)。
+S_微调版的准确文件来源与发布边界见 [PROVENANCE.md](./workflows/charactor-distiller_Sv2/PROVENANCE.md)。
