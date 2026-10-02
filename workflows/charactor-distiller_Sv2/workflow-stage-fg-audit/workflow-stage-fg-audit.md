@@ -135,7 +135,7 @@ Build `Expected` from:
 - `action.md` for task handling
 - `theme.md` only for depth, never for overriding persona/canon
 
-Do not score by "vibes" alone. The question is whether the output matches the expected behavior implied by the files.
+Do not score by "vibes" alone. The question is whether the output matches the expected behavior implied by the files. When persona/action conflict with target-period source evidence, flag the derived rule rather than rewarding obedience to it. Remorse, self-awareness, and moral maturity earn no automatic bonus; neither does refusing to change. Judge the character's reaction and any change against the evidence, relationship, and facts presented.
 
 ### Ordinary Chat
 
@@ -210,7 +210,7 @@ Pass:
 
 - relationship-specific reaction
 - not same tone as enemy debate
-- avoids flattening into pure apology or pure defense
+- apology, defense, avoidance, or mixed reactions match the target period and relationship; none is mandatory
 
 Expected example:
 
@@ -228,8 +228,8 @@ Expected example:
 
 Pass:
 
-- character defends or reframes in own style
-- does not collapse into generic apology
+- character reacts to the challenge in their own style
+- does not turn an accusation alone into generic apology or final self-condemnation; supported acknowledgment or change remains possible
 - does not become crude rant
 
 Expected example:

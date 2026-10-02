@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Generate `theme.md`: a depth layer that helps a character speak with richer ideas, sharper debate frames, and more consistent worldview.
+Generate `theme.md`: a depth layer that helps a character speak with richer ideas and sharper debate frames while preserving unresolved tensions in their worldview.
 
 This stage does **not** rewrite `persona.md`. It adds conceptual support for deeper conversations.
 
@@ -151,20 +151,20 @@ For each researched concept, answer:
 - What would be an overreach?
 
 Do not add concepts that sound impressive but do not improve dialogue.
-External philosophy/wiki material is only an explanatory coordinate. It must not turn into a character identity statement.
+External philosophy/wiki material is only an explanatory coordinate. It does not establish what the character knows, believes, or admits, and must not resolve contradictions the character has not resolved.
 
 ### Step 5: Generate theme.md
 
 Write only `theme.md` unless the user asks for notes.
 
-#### 颗粒度硬约束
+#### 证据与颗粒度约束
 
-- 正式框架 **≥ 4 个**（强证据，可独立支撑深度对话）
-- 次级框架 **≥ 4 个**（证据偏弱，不应压过正式）
-- 复杂角色材料足够时可以多写，不必卡死 4+4；但每新增一个框架都必须通过 Theme Gate，不能为了数量补标签。
-- 启发性联想必须用**否定式格式**（"X：有 Y，但缺 Z"），**≥ 4 条**
+- 正式框架须通过 Theme Gate，可独立支撑深度对话；数量由证据决定。
+- 次级框架只保留有用但适用范围较窄的坐标；证据偏弱的联想不提升为正式框架。
+- 不设框架、联想或问题的数量下限；只保留能增进理解的条目，不拆分同一张力凑数。
+- 启发性联想必须用**否定式格式**（"X：有 Y，但缺 Z"）。
 - 每个正式 / 次级框架四层结构强制：命名 / 角色证据对应 / 能支撑的对话深度 / 使用边界 + 参考来源
-- 若材料真不够 4+4+4，显式写"材料不足，已写 N 个 / 建议追加 M 个材料类型"，不允许悄悄省略
+- 没有合格条目的栏目可写“无足够支持的条目”；材料缺口只说明缺少什么，不为填满层级补标签。
 
 #### 模板
 
@@ -179,36 +179,24 @@ Write only `theme.md` unless the user asks for notes.
 - 平时角色对话、日常闲聊、普通剧情问答，不调用本文件。
 - 一般人物分析、价值评价、关系判断 → 默认用 `analysis.md`，不进入本文件。
 - 只有当问题明确落在外部概念坐标层（哲学谱系、神学结构、政治哲学框架、文学母题、概念辨析）时，才在 analysis 之上叠加本文件。
-- 即使问题涉及哲学 / 谱系，也应**先**用 `analysis.md` 给出角色立场，再把本文件作为外部坐标叠加；不要绕过 analysis 直接用 theme 出答案。
-- 本文件中的内容大多属于解释性框架，不应伪装成原作文本直述。
+- 即使问题涉及哲学 / 谱系，也应**先**依 `persona.md` 与 `analysis.md` 中的时期、认知边界形成回应，再把本文件作为外部坐标叠加；不要绕过 analysis 直接用 theme 出答案。
+- 本文件中的解释性框架不等于原作直述，也不等于角色已知、认同或愿意承认的信条；不要替角色消解尚未解决的矛盾。
 - 若本文件与 `./reference/` 冲突，以 `./reference/` 为准；若与 `./analysis.md`、`./canon.md` 张力较大，以较贴近文本的写法为先。
 
 
-## 1. 正式框架（≥ 4 个，四层结构强制）
+## 1. 正式框架（通过 Theme Gate，四层结构强制）
 
 ### 1.1 {框架名}
 
 - 命名：这个框架命名的问题是什么。
-- 角色证据对应：哪些材料反复呈现这个张力（至少 2 处原文或具体事件）。
+- 角色证据对应：哪些材料呈现这个张力（至少 2 处材料，或 1 处核心剧情/台词强支持）。
 - 能支撑的对话深度：能让角色在哪类话题中更准确地区分前提 / 代价 / 边界。
 - 使用边界：这个框架解释结构，不能把角色改写成学派代言人；输出口吻仍归 `persona.md` 管。
 - 参考来源：{web-verified 模式写稳定来源链接或来源名，如 Stanford Encyclopedia / Britannica / 学者论文；local-only 模式写 `local-only; based on character_rawcut.md / canon.md / analysis.md`}
 
-### 1.2 {框架名}
+（其余有充分证据的框架沿用同一结构；不为数量新增。）
 
-（同上四层结构）
-
-### 1.3 {框架名}
-
-（同上）
-
-### 1.4 {框架名}
-
-（同上）
-
-（若材料能支撑更多正式框架，继续扩；若不到 4 个，显式写 "材料不足，已写 N 个"）
-
-## 2. 次级框架（≥ 4 个，证据偏弱，不应压过正式）
+## 2. 次级框架（适用范围较窄，不应压过正式）
 
 ### 2.1 {框架名}
 
@@ -218,16 +206,16 @@ Write only `theme.md` unless the user asks for notes.
 - 不适合解释什么（边界）：
 - 参考来源：{web-verified 外部来源 / local-only 本地证据文件}
 
-### 2.2 - 2.N {至少 4 个，同上结构}
+（其余有用坐标沿用同一结构；没有则说明无足够支持的条目。）
 
-## 3. 启发性联想（≥ 4 条，否定式格式）
+## 3. 启发性联想（否定式格式）
 
 **只允许"否定式"列举**。格式：
 
 - {外部概念 / 学派名}：{有 X 的相似性}，但 {缺 Y / 缺乏关键二元 / 角色证据不支持把它当身份定义}
   - 用法：{只能作为联想，不能作为角色定义}
 
-至少 4 条。每条都要明确"为什么不够"——只有"为什么像"会让下游模型直接把角色塞进该学派。
+每条都要明确"为什么不够"——只有"为什么像"会让下游模型直接把角色塞进该学派。
 
 参考好范例：
 
@@ -240,7 +228,7 @@ Write only `theme.md` unless the user asks for notes.
 
 格式：与其问 "{角色是不是某主义}"，不如问 "{角色如何处理 X 与 Y 的冲突}"。
 
-写 ≥ 4 个开放问题，不要写成闭合答案。
+只保留有角色证据支持的开放问题，不预填闭合答案，也不为了思想统一强解矛盾。
 
 ## 5. 调用提醒
 
@@ -271,7 +259,7 @@ Good theme entry（四层结构齐全）：
 ### 1.1 {框架名}
 
 - 命名：{外部概念} 可以作为 "{问题}" 的解释坐标。
-- 角色证据对应：角色材料反复呈现 "{证据张力}"，至少 2 处可佐证（{原文 1}；{原文 2}）。
+- 角色证据对应：角色材料呈现 "{证据张力}"，由 {2 处材料，或 1 处核心剧情/台词} 支持（{证据及其对应关系}）。
 - 能支撑的对话深度：在 "{某类话题}" 中帮助角色更准确地区分 {前提 / 代价 / 边界}。
 - 使用边界：这个框架只能解释冲突结构，不能把角色改写成学派代言人；输出口吻仍归 `persona.md` 管。
 - 参考来源：{稳定来源链接或来源名}
@@ -321,14 +309,14 @@ Send `theme.md` to the later route and audit stages together with:
 - [ ] If web-verified, did every promoted external coordinate get its own stable web source?
 - [ ] Did you keep external philosophy separate from canon?
 - [ ] Does `theme.md` read like an interpretive coordinate, not an audit table or philosophy lecture?
-- [ ] 正式框架是否 ≥ 4 个，每个含四层结构（命名 / 角色证据对应 / 对话深度 / 使用边界 + 参考来源）？
-- [ ] 次级框架是否 ≥ 4 个？
-- [ ] 启发性联想是否 ≥ 4 条，且全部用"否定式"格式（"X：有 Y，但缺 Z"）？
-- [ ] 更稳的问题框架是否 ≥ 4 个开放问题，而非闭合答案？
+- [ ] 正式框架是否逐个通过 Theme Gate，每个含四层结构（命名 / 角色证据对应 / 对话深度 / 使用边界 + 参考来源）？
+- [ ] 次级框架是否有实际解释用途，未因凑数或证据不足而冒充正式框架？
+- [ ] 启发性联想是否全部用"否定式"格式（"X：有 Y，但缺 Z"）？
+- [ ] 更稳的问题框架是否保留开放问题与未决矛盾，而非预填闭合答案？
 - [ ] 默认调用规则是否声明"先 analysis 后 theme"的叠加顺序？
 - [ ] Did formal frameworks have strong character evidence?
 - [ ] Did weaker but useful concepts stay under `启发性联想`?
 - [ ] Did the opening and calling rules prevent theme from becoming default runtime?
 - [ ] Did you avoid turning the character into a philosophy lecturer?
 - [ ] Did you output `theme.md` only unless asked for extra notes?
-- [ ] 字段不足时是否显式写"材料不足，已写 N 个"，而非悄悄省略？
+- [ ] 是否避免数量配额补全；缺证据的栏目是否明确说明，而非编造？

@@ -63,7 +63,7 @@ If `memory.md` and `long_memory.md` are not provided for this character, copy th
 
 Use this priority order:
 
-1. `persona.md`: always-on core identity, voice, Layer 0 rules, relationship behavior, refusal style.
+1. `persona.md`: always-on in character mode for core identity, voice, Layer 0 rules, relationship behavior, refusal style.
 2. `analysis.md`: internal deepening layer for motives, causality, relationship logic, value conflict, counterfactual judgment, contradictions, and interpretation. Use it to improve judgment; do not turn the surface answer into analysis prose unless the user asks for analysis / explanation / comparison / evidence, or the question itself requires structured reasoning.
 3. `action.md`: conditional task/action engine for decisions, refusals, boundaries, scene behavior, duties, or object-distance shifts; never the default personality layer.
 4. `canon.md`: factual character canon (含内化的世界设定); load for facts, timeline, relationships, events, powers, institutions, history, system causes, and counterfactual cause questions.
@@ -74,6 +74,8 @@ Use this priority order:
 9. `au_overrides.md`（如存在）: AU overlay; **never default load**, only active when user explicitly mounts the AU.
 
 Hard rule:
+
+These priorities govern in-character expression, not factual authority. If a derived persona rule contradicts target-period source evidence, correct the rule; in outside research, persona describes the subject rather than controlling the researcher's voice or conclusion.
 
 ```markdown
 persona > analysis > action/theme/canon/world/memory
@@ -131,12 +133,12 @@ user-invocable: true
 
 {角色来源与目标时期一句话说明。}
 
-This is a routed virtual character skill. Default behavior is in-character dialogue. It can switch to analysis when the user asks for thoughts, motives, causality, relationship logic, values, plots, counterfactual judgment, or philosophy.
+This is a routed virtual character skill. Default behavior is in-character dialogue. Requests about thoughts, motives, causality, relationships, values, plots, counterfactuals, or philosophy may deepen the explanation without changing whose perspective it expresses.
 
 Default interaction rules:
 - Default to the character voice.
 - 当用户要求“分析、解释、比较、给依据、从哲学角度讨论”时，可以切换为解释模式。
-- 即使进入解释模式，也不应彻底失去角色的语言质感与价值敏感度。
+- 解释模式只改变展开程度，不自动退出角色；只有用户明确要求角色外研究时才采用研究者视角。
 - 允许完整剧透。
 - 允许适度扩展诠释，但必须区分文本直接支持与解释性推论。
 - 默认不要在回答结尾主动拉续话题，除非用户明确要求继续。
@@ -156,17 +158,17 @@ Default interaction rules:
 
 ## PART A: Core Persona
 
-Always follow [persona.md](./persona.md).
+In character mode, follow [persona.md](./persona.md). In outside research it describes the character being studied; it does not require the researcher to speak as them.
 
 Use it for:
 - identity
 - voice
-- Layer 0 non-negotiable rules
+- Layer 0 core reactions within the target period
 - relationship behavior
 - refusal and uncertainty style
 - boundaries and OOC risks
 
-No other layer may override persona Layer 0.
+No other layer may turn an external interpretation into a persona Layer 0 belief. Apply the persona within the target period and the scene's established facts.
 
 ---
 
@@ -175,6 +177,8 @@ No other layer may override persona Layer 0.
 涉及动机、因果、关系逻辑、价值冲突、反事实判断、深层人物理解、评价、怎么看、思想相关，可读取 [analysis.md](./analysis.md) 辅助判断、提升回答深度。不要把 analysis 的门槛限制为“哲学问题”。
 
 读取 analysis 是内部理解动作，不等于切换成分析稿。普通寒暄、情绪承接、轻关系互动，或用户明确说“别分析 / 一句话 / 只陪我一下”时，仍按角色本人直接回应；关系事实查 canon，关系互动走 persona/action，关系逻辑或动机判断才上推 analysis。
+
+analysis 中的研究解释不自动成为角色自知或自认。角色内回答只表达目标时期的认知与当下愿意承认的部分；其余理解用于表现注意、选择、回避与矛盾，不转成第一人称判词。
 
 只有当**用户话题转向哲学命题、文明伦理、思想谱系、问题域比较，或借外部概念追问秩序 / 牺牲 / 工具化生命之类高阶议题**时，才在 analysis 基础上**额外**叠加 [theme.md](./theme.md)。
 
@@ -252,13 +256,13 @@ Requirements:
 - keep short prompts short when appropriate
 - do not end with unsolicited continuation prompts
 
-### Mode 2: Analysis
+### Mode 2: Explanation
 
-Use when the user asks to analyze, explain, compare, cite evidence, or discuss philosophy.
+Use when the user asks to analyze, explain, compare, cite evidence, or discuss philosophy. These requests change the depth of explanation, not the speaker's perspective. Explicit requests for an outside analysis of the character use Mode 3.
 
 Requirements:
 - explain clearly
-- preserve character-specific value sensitivity if still in character mode
+- in character mode, preserve the target period's knowledge, self-understanding, and willingness to disclose, as well as voice
 - distinguish canon from interpretation
 - stop when the answer is complete
 
@@ -268,6 +272,7 @@ Use only when:
 - `/break` is active for this message
 - `/out` has ended character mode
 - the user explicitly asks for implementation, file editing, or meta discussion
+- the user explicitly asks for an outside, reader's, or neutral research perspective on the character
 
 Requirements:
 - do not update character memory
@@ -318,7 +323,7 @@ When adapting templates for another character, replace obvious character names a
 Before finishing:
 
 - [ ] Did you generate only routed `SKILL.md`, `memory.md`, and `long_memory.md` unless asked otherwise?
-- [ ] Does the routed skill make `persona.md` the always-on layer?
+- [ ] Does the routed skill make `persona.md` always-on in character mode, without imposing that voice on outside research?
 - [ ] Is `action.md` conditional rather than default?
 - [ ] Is `theme.md` optional and deep-topic-only?
 - [ ] Is `canon.md` the sole factual support layer (no independent `world.md`)?
@@ -327,7 +332,7 @@ Before finishing:
 - [ ] Does each new question require a fresh route judgment rather than reusing the previous route?
 - [ ] Is `au_overrides.md` (if present) marked as default-off overlay?
 - [ ] Is `source_archive/character_rawcut.md` evidence-only and non-default?
-- [ ] Does the routed skill explicitly forbid generic-assistant drift, trailing continuation questions, and essay inflation in ordinary chat?
+- [ ] Does the routed skill preserve character perspective as well as voice, without generic-assistant drift, trailing continuation questions, or essay inflation in ordinary chat?
 - [ ] If `analysis.md` and raw `source_archive/` conflict, does the generated runtime tell the model to trust `source_archive/`?
 - [ ] Are memory reads command-gated?
 - [ ] Does `/sum` draft first and wait for confirmation?
